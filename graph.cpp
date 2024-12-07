@@ -1,22 +1,26 @@
 #include"graph.h"
-void CreateMGraph(MGraph* G)
+void CreateALGraph(GraphAdjList* G)
 {
-	int i, j, k, w;
+	int i, j, k;
+	EdgeNode* e;
 	printf("输入顶点数和边数：\n");
 	scanf("%d,%d", &G->numVertexes, &G->numEdges);
 	for (i = 0; i < G->numVertexes; i++)
-		scanf(&G->vexs[i]);
-	for (i = 0; i < G->numVertexes; i++)
-		for (j = 0; j < G->numVertexes; j++)
-			if (i == j)
-				G->arc[i][j] == 0;
-			else
-				G->arc[i][j] = INFINITY;
+	{
+		scanf(&G->adjList[i].data);
+		G->adjList[i].firstedge = NULL;
+	}
 	for (k = 0; k < G->numEdges; k++)
 	{
-		printf("输入边(vi,vj)上的下标i,下标j和权w：\n");
-		scanf("%d %d %d", &i, &j, &w);
-		G->arc[i][j] = w;
-		G->arc[j][i] = G->arc[i][j];
+		printf("输入边(vi,vj)上的顶点序号：\n");
+		scanf("%d,%d", &i, &j);
+		e = (EdgeNode*)malloc(sizeof(EdgeNode));
+		e->adjvex = j;
+		e->next = G->adjList[i].firstedge;
+		G->adjList[i].firstedge = e;
+		e = (EdgeNode*)malloc(sizeof(EdgeNode));
+		e->adjvex = i;
+		e->next = G->adjList[j].firstedge;
+		G->adjList[j].firstedge = e;
 	}
 }

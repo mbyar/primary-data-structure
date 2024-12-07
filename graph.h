@@ -1,16 +1,27 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
+#include<stdlib.h>
 typedef char VertexType;
 typedef int EdgeType;
 #define MAXVEX 100
 #define INFINITY 65535
+typedef struct EdgeNode
+{
+	int adjvex;
+	EdgeType weight;
+	struct EdgeNode* next;
+}EdgeNode;
+typedef struct VertexNode
+{
+	VertexType data;
+	EdgeNode* firstedge;
+}VertexNode,AdjList[MAXVEX];
 typedef struct
 {
-	VertexType vexs[MAXVEX];
-	EdgeType arc[MAXVEX][MAXVEX];
+	AdjList adjList;
 	int numVertexes, numEdges;
-}MGraph;
-void CreateMGraph(MGraph* G);
+}GraphAdjList;
+void CreateALGraph(GraphAdjList* G);
 //CreateGraph(*G,V,VR)
 //DestroyGraph(*G)
 //LocateVex(G,u)
