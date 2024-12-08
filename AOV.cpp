@@ -1,48 +1,57 @@
-//typedef int Pathmatirx[MAXVEX][MAXVEX];
-//typedef int ShortPathTable[MAXVEX][MAXVEX];
-//void ShortestPath_Floyd(MGraph G, Pathmatirx* P, ShortPathTable* D)
-//{
-//	int v, w, k;
-//	for (v = 0; v < G.numVertexes; ++v)
-//	{
-//		for (w = 0; w < G.numVertexes; ++w)
-//		{
-//			(*D)[v][w] = G.matirx[v][w];
-//			(*P)[v][w] = w;
-//		}
-//	}
-//	for (k = 0; k < G.numVertexes; ++k)
-//	{
-//		for (v = 0; v < G.numVertexes; ++v)
-//		{
-//			for (w = 0; w < G.numVertexes; ++w)
-//			{
-//				if ((*D)[v][w] > (*D)[v][k] + (*D)[k][w])
-//				{
-//					(*D)[v][w] = (*D)[v][k] + (*D)[k][w];
-//					(*P)[v][w] = (*P)[v][k];
-//				}
-//			}
-//		}
-//	}
-//}
-//void show_path(MGraph G, Pathmatirx* P, ShortPathTable* D)
-//{
-//	int v,w,k;
-//	for (v = 0; v < G.numVertexes; ++v)
-//	{
-//		for (w = v + 1; w < G.numVertexes; w++)
-//		{
-//			printf("v%d-v%d weight: %d ", v, w, D[v][w]);
-//			k = P[v][w];
-//			printf("path:%d", v);
-//			while (k != w)
-//			{
-//				printf(" -> %d", k);
-//				k = P[k][w];
-//			}
-//			printf(" -> %d\n", w);
-//		}
-//		printf("\n");
-//	}
-//}
+#define _CRT_SECURE_NO_WARNINGS 1
+#include<stdio.h>
+#include<stdlib.h>
+#define MAXVEX 50
+#define ERROR 0
+#define OK 1
+typedef struct EdgeNode
+{
+	int adjvex;
+	int weight;
+	struct EdgeNode* next;
+}EdgeNode;
+typedef struct VertexNode
+{
+	int in;
+	int data;
+	EdgeNode* firstedge;
+}VertexNode, AdjList[MAXVEX];
+typedef struct
+{
+	AdjList adjList;
+	int numVertexes, numEdges;
+}graphAdjList, * GraphAdjList;
+typedef int Status;
+Status TopologicalSort(GraphAdjList GL)
+{
+	EdgeNode* e;
+	int i, k, gettop;
+	int top = 0;
+	int count = 0;
+	int* stack;
+	stack = (int*)malloc(GL->numVertexes * sizeof(int));
+	for (i = 0; i < GL->numVertexes; i++)
+		if (GL->adjList[i].in == 0)
+			stack[++top] = i;
+	while (top != 0)
+	{
+		gettop = stack[top--];
+		printf("%d -> ", GL->adjList[gettop].data);
+		count++;
+		for (e = GL->adjList[gettop].firstedge; e; e = e->next)
+		{
+			k = e->adjvex;
+			if (!(--GL->adjList[k].in))
+				stack[++top] = k;
+		}
+	}
+	if (count < GL->numVertexes)
+		return ERROR;
+	else
+		return OK;
+}
+int main()
+{
+
+	return 0;
+}
